@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skills em Alta</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Descubra Habilidades em Alta</h1>
+
+    <input type="text" id="profissao" placeholder="Digite uma profissão! ">
+    <button onclick="buscarSkills()">Buscar</button>
+
+    <ul id="listaSkills"></ul>
+
+    <script>
+    async function buscarSkills() {
+      const profissao = document.getElementById('profissao').value;
+      const resposta = await fetch(`https://skills.emsidata.com/skills?keywords=${profissao}`);
+      const dados = await resposta.json();
+
+      const lista = document.getElementById('listaSkills');
+      lista.innerHTML = "";
+
+      if (dados.length === 0) {
+        lista.innerHTML = "<li>Nenhuma habilidade encontrada.</li>";
+        return;
+      }
+
+      dados.slice(0, 10).forEach(skill => {
+        const li = document.createElement('li');
+        li.textContent = skill.name;
+        lista.appendChild(li);
+      });
+    }
+  </script>
+</body>
+</html>
